@@ -1,0 +1,7 @@
+- hosts: all    # or "*" if all of them support apt
+  become: true       # become root
+  tasks: 
+    - name: apt
+      apt: 
+        update_cache: yes
+        upgrade: 'yes'

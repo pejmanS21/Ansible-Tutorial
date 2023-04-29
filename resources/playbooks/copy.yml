@@ -1,0 +1,9 @@
+- name: Copy a file to servers
+  vars:
+    srcfile: ../templates/hello-ansible.txt
+    destfile: ansible-test/hello-ansible.txt
+  hosts: all
+  become: true
+  tasks:
+  - name: Copy text file to servers
+    template: src={{ srcfile }} dest={{ destfile }}

@@ -1,0 +1,29 @@
+---
+- name: Create User in SERVER
+  hosts: servers
+  vars_files:
+    - "../vars/project-vars.yaml"
+  vars:
+    user_comment: this_{{username}}
+  tasks:
+    - name: Create new user
+      ansible.builtin.user:   # or just "user"
+        name: "{{username}}"
+        comment: "{{user_comment}}"
+        group: "{{user_group}}"
+
+- name: Check created user
+  hosts: servers
+  become: True      # allow to change user
+  become_user: "{{username}}"   # default is root
+  tasks:
+    - name: Check user
+      shell: whoami
+      register: which_user
+    - debug: msg={{which_user.stdout_lines}}
+    
+    - name: Check files
+      shell: pwd
+      register: workingdir
+    - debug: msg={{workingdir.stdout_lines}}
+        

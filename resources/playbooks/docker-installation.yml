@@ -1,0 +1,52 @@
+---
+- name: Install Docker & Python3  
+  hosts: servers
+  become: true
+  gather_facts: false   # Skip Gathering facts only for this play
+  tasks:
+    - name: Installation
+      vars:
+        ansible_python_interpreter: /usr/bin/python   # Use python2 just for this task
+        apt:
+          name:
+            - python3
+            - docker
+          update_cache: yes
+          state: present
+
+- name: Install Docker Compose
+  hosts: servers
+  tasks:
+    - name: Download
+      get_url:
+        url: https://github.com/docker/compose/releases/download/v2.12.2/docker-compose-{{lookup('pipe', 'uname -s')}}-{{lookup('pipe', 'uname -m')}}
+        dest: /usr/local/bin/docker-compose
+        mode: +x
+ 
+- name: Start Docker Engine
+  hosts: servers
+  become: true
+  tasks:
+    - name: Start Docker Daemon
+      systemd: 
+        name: docker
+        state: started
+
+- name: Add user to docker group
+  hosts: servers
+  tasks:
+    - name: Add user to docker group
+      user: 
+        name: "{{username}}"
+        groups: docker
+        append: yes
+    - name: Reconnect to server session # So user add group work
+      meta: reset_connection
+
+- name: Pull Docker Image
+  hosts: servers
+  tasks:
+    - name: Pull hello-world
+      command: docker pull hello-world
+
+        

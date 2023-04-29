@@ -1,0 +1,12 @@
+--- 
+- name: Prompt variables in terminal
+  hosts: servers
+  vars_prompt:
+    - name: prompted_variable
+      prompt: Enter variables
+      
+  tasks:
+    - name: Get variable from user while executing playbook
+      shell: echo {{prompted_variable}}
+      register: prompt_var 
+    - debug: msg={{prompt_var.stdout_lines}}

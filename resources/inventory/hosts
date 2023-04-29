@@ -1,0 +1,12 @@
+[servers]
+123.4.56.7
+
+[servers:vars]
+ansible_user=root
+
+[devservers]
+dev.hostname 
+
+[devservers:vars]
+ansible_user=pejman
+ansible_port=3031 ansible_host=123.4.78.65.

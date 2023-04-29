@@ -1,0 +1,3 @@
+username: pejman 
+user_group: admin
+private_registry: private-docker-hub.example.com

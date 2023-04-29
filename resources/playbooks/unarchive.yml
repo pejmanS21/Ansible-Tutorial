@@ -1,0 +1,9 @@
+---
+- name: Unzip file in zip
+  hosts: servers
+  tasks: 
+    - name: Copy & Unzip 
+      unarchive:
+        src: ../templates.zip
+        dest: /root/
+        remote_src: no    # Default is no

@@ -1,0 +1,8 @@
+---
+- name: Example SHELL Command
+  hosts: servers
+  tasks:
+    - name: Check a specific docker container and Print it
+      shell: docker ps | grep "portainer"
+      register: container_status # Save results of shell command in "container_status" variable
+    - debug: msg={{container_status.stdout_lines}}

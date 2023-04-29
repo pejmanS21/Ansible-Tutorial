@@ -1,0 +1,65 @@
+---
+- name: Examples for Docker (Start FastAPI with docker-compose)
+  hosts: servers
+  become: true
+  vars_prompt:
+    - name: dockehub_username
+      private: true
+      prompt: Enter username for docker_hub
+      
+    - name: dockehub_password
+      private: true
+      prompt: Enter password for docker_hub
+
+    - name: private_hub_username
+      private: true
+      prompt: Enter username for private_hub
+
+    - name: private_hub_password
+      private: true
+      prompt: Enter password for private_hub
+
+  vars_files:
+    - "../vars/project-vars.yaml"
+    
+  tasks:
+    - name: Copy docker-compose file to server
+      copy:
+        src: ../templates/docker-compose.yml
+        dest: /root/docker-compose.yml
+    
+    - name: Install python module for docker 
+      pip: 
+        name: 
+          - docker
+          - docker-compose
+
+    - name: Log into DockerHub
+      community.docker.docker_login:  # you can just write docker_login
+        username: "{{dockehub_username}}"
+        password: "{{dockehub_password}}"
+
+    - name: Log into private registry and force re-authorization
+      community.docker.docker_login:
+        registry_url: "{{private_registry}}"
+        username: "{{private_hub_username}}"
+        password: "{{private_hub_password}}"
+        reauthorize: true
+
+    - name: Pull redis image
+      community.docker.docker_image:
+        name: redis
+        source: pull
+        ## Select platform for pulling. If not specified, will pull whatever docker prefers.
+        # pull:
+        #   platform: amd64
+
+    - name: Start FastAPI compose
+      community.docker.docker_compose:
+        project_src: /root
+        state: present  # docker compose up
+        # state: absent  # docker compose down
+
+    - name: Log out of DockerHub
+      community.docker.docker_login:
+        state: absent
