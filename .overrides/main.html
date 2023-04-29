@@ -1,0 +1,49 @@
+{#-
+  This file was automatically generated - do not edit
+-#}
+{% extends "base.html" %}
+{% block extrahead %}
+  <link rel="stylesheet" href="{{ 'assets/stylesheets/custom.css' | url }}">
+{% endblock %}
+{% block announce %}
+  Connect with <strong>@pejmans21</strong> on
+  <a rel="me" href="https://www.linkedin.com/in/pejman-samadi/">
+    <span class="twemoji linkedin">
+      {% include ".icons/linkedin.svg" %}
+    </span>
+    <strong>LinkedIn</strong>
+  </a>
+  and
+  <a href="https://twitter.com/pejsamadi">
+    <span class="twemoji twitter">
+      {% include ".icons/twitter.svg" %}
+    </span>
+    <strong>Twitter</strong>
+  </a>
+  .
+{% endblock %}
+{% block scripts %}
+  {{ super() }}
+  <script src="{{ 'assets/js/custom.js' | url }}"></script>
+{% endblock %}
+
+{#-
+ 
+  <br>
+  <br>
+  Check my <code>projects</code> on
+  <a href="https://github.com/pejmans21">
+    <span class="twemoji github">
+      {% include ".icons/github-alt.svg" %}
+    </span>
+    <strong>GitHub</strong>
+  </a>
+  and
+  <a href="https://gitlab.com/pezhmansamadi21">
+    <span class="twemoji gitlab">
+      {% include ".icons/gitlab.svg" %}
+    </span>
+    <strong>GitLab</strong>
+  </a>
+  .
+-#}
